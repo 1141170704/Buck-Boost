@@ -25,7 +25,10 @@
             "editor.insertSpaces": true,
             "editor.tabSize": 4,
             "editor.autoIndent": "advanced"
-        }
+        },
+        "editor.suggestLineHeight": 8,
+        "editor.lineHeight": 1,
+        "todo-tree.tree.scanMode": "workspace"
     },
     "extensions": {
         "recommendations": [
