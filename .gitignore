@@ -1,0 +1,51 @@
+# 忽略 STM32CubeMX 生成的临时文件和目录
+**/Drivers/
+**/Middlewares/
+**/EWARM/
+**/MDK-ARM/
+**/TrueSTUDIO/
+**/STM32CubeIDE/
+**/.mxproject
+**/.cproject
+**/.project
+**/.settings/
+**/.metadata/
+**/.recommenders/
+
+# 忽略编译生成的文件
+**/*.o
+**/*.d
+**/*.su
+**/*.elf
+**/*.hex
+**/*.bin
+**/*.map
+**/*.lst
+**/*.axf
+**/*.log
+
+# 忽略 IDE 配置文件
+**/*.uvprojx
+**/*.uvoptx
+**/*.eww
+**/*.ewp
+**/*.ewt
+**/*.launch
+**/*.cproject
+**/*.project
+
+# 忽略本地用户配置文件
+**/.vscode/
+**/.idea/
+**/*.iml
+
+# 忽略调试文件
+**/*.dbg
+**/*.stackdump
+**/*.debug
+
+# 忽略其他临时文件
+**/*~
+**/.#*
+**/*.bak
+**/*.tmp
