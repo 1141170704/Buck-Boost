@@ -1,5 +1,6 @@
 # 忽略 STM32CubeMX 生成的临时文件和目录
 **/Drivers/
+**/build/
 **/Middlewares/
 **/EWARM/
 **/MDK-ARM/
