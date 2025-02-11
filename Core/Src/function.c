@@ -27,7 +27,7 @@ struct _Ctr_value CtrValue  = {0, 0, 0, 0, MIN_BUKC_DUTY, 0, 0, 0}; // 控制参
 struct _FLAG FlagSet        = {0, 0, 0, 0, 0, 0, 0};                // 控制标志位
 struct _ADI SADC            = {0, 0, 0, 0, 0, 0, 0, 0};             // 输入输出参数采样值和平均值
 struct _SET_Value SET_Value = {0, 0, 0, 0, 0};                      // 设置参数
-SState_M STState            = SSInit;                               // 1 WENJIAN   6YIN YON                                      // 软启动状态标志位
+SState_M STState            = StateMachineSub_SSInit;               // 1 WENJIAN   6YIN YON                                      // 软启动状态标志位
 _Screen_page Screen_page    = VIset_page;                           // 当前屏幕页面标志位
 volatile float VIN, VOUT, IIN, IOUT;                                // 电压电流实际值
 volatile float MainBoard_TEMP, CPU_TEMP;                            // 主板和CPU温度实际值
@@ -884,9 +884,9 @@ void ADC_calculate(void)
 /*
  * @brief 状态机函数，在5ms中断中运行，5ms运行一次
  */
-CCMRAM void StateM(void)
+CCMRAM void StateMachine(void)
 {
-    // TODO 判断状态类型
+    // BM 判断状态类型
     switch (FlagSet.SMFlag) {
         // 初始化状态
         case Init:
@@ -898,7 +898,7 @@ CCMRAM void StateM(void)
             break;
         // 软启动状态
         case Rise:
-            StateMRise();
+            StateMachineRise();
             break;
         // 运行状态
         case Run:
@@ -1004,7 +1004,7 @@ void StateMWait(void)
             // 状态标志位跳转至等待状态
             FlagSet.SMFlag = Rise;
             // 软启动子状态跳转至初始化状态
-            STState = SSInit;
+            STState = StateMachineSub_SSInit;
         }
     }
 }
@@ -1012,7 +1012,7 @@ void StateMWait(void)
 /*
  * @brief 软启动阶段
  */
-void StateMRise(void)
+void StateMachineRise(void)
 {
     // 计时器
     static uint16_t Cnt = 0;
@@ -1022,7 +1022,7 @@ void StateMRise(void)
     // 判断软启状态
     switch (STState) {
         // 初始化状态
-        case SSInit: {
+        case StateMachineSub_SSInit: {
             // 关闭PWM
             FlagSet.PWMENFlag = 0;
             HAL_HRTIM_WaveformOutputStop(&hhrtim1, HRTIM_OUTPUT_TD1 | HRTIM_OUTPUT_TD2); // 关闭BUCK电路的PWM输出
@@ -1040,12 +1040,12 @@ void StateMRise(void)
             CtrValue.Vout_SETref = SET_Value.Vout * (4.7F / 75.0F) / REF_3V3 * ADC_MAX_VALUE;
             CtrValue.Iout_ref    = SET_Value.Iout * 0.005F * (6200.0F / 100.0F) / REF_3V3 * ADC_MAX_VALUE;
             // 跳转至软启等待状态
-            STState = SSWait;
+            STState = StateMachineSub_SSWait;
 
             break;
         }
         // 等待软启动状态
-        case SSWait: {
+        case StateMachineSub_SSWait: {
             // 计数器累加
             Cnt++;
             // 等待25ms
@@ -1064,12 +1064,12 @@ void StateMRise(void)
                 u0                  = 0;
                 u1                  = 0;
                 CtrValue.Vout_SSref = CtrValue.Vout_SETref >> 1; // 输出参考电压从一半开始启动，避免过冲，然后缓慢上升
-                STState             = SSRun;                     // 跳转至软启状态
+                STState             = StateMachineSub_SSRun;     // 跳转至软启状态
             }
             break;
         }
         // 软启动状态
-        case SSRun: {
+        case StateMachineSub_SSRun: {
             if (FlagSet.PWMENFlag == 0) // 正式发波前环路变量清0
             {
                 // 环路计算变量初始化
@@ -1101,7 +1101,7 @@ void StateMRise(void)
                 // 状态机跳转至运行状态
                 FlagSet.SMFlag = Run;
                 // 软启动子状态跳转至初始化状态
-                STState = SSInit;
+                STState = StateMachineSub_SSInit;
             }
             break;
         }

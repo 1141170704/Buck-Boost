@@ -1,1 +1,0 @@
---cpu=Cortex-M4.fp --scatter "d:/Temp/----------/Buck-Boost/build/Buck-Boost/Buck-Boost.sct" --diag_suppress=L6329 --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers --list ./build/Buck-Boost/Buck-Boost.map

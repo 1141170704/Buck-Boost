@@ -104,10 +104,10 @@ typedef enum {
 
 // 软启动枚举变量
 typedef enum {
-    SSInit, // 软启初始化
-    SSWait, // 软启等待
-    SSRun   // 开始软启
-} SState_M; // 引用为 1    --------
+    StateMachineSub_SSInit, // 软启初始化
+    StateMachineSub_SSWait, // 软启等待
+    StateMachineSub_SSRun   // 开始软启
+} SState_M;                 // 引用为 1    --------
 
 // 屏幕页面枚举变量
 typedef enum {
@@ -176,10 +176,10 @@ void Encoder(void);
 void Key_Process(void);
 void OLED_Display(void);
 void ADC_calculate(void);
-void StateM(void);
+void StateMachine(void);
 void StateMInit(void);
 void StateMWait(void);
-void StateMRise(void);
+void StateMachineRise(void);
 void StateMRun(void);
 void StateMErr(void);
 void ValInit(void);

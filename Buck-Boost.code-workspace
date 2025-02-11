@@ -28,7 +28,10 @@
         },
         "editor.suggestLineHeight": 8,
         "editor.lineHeight": 1,
-        "todo-tree.tree.scanMode": "workspace"
+        "todo-tree.tree.scanMode": "workspace",
+        "Codegeex.RepoIndex": true,
+        "Codegeex.CompletionDelay": 3,
+        "Codegeex.GenerationPreference": "automatic"
     },
     "extensions": {
         "recommendations": [
